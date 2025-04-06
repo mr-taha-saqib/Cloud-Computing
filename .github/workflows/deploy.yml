@@ -17,16 +17,53 @@ jobs:
       - name: Log in to Azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
-      - name: Deploy Bicep Modules
+      - name: Deploy VNETs
         uses: azure/arm-deploy@v1
         with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: taha
-          template: ./bicep/main.bicep
-          parameters: location=eastus resourceGroupName=taha
-          deploymentName: deploy-modular-bicep
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource-group: taha
+          template: bicep/vnet.bicep
+          deployment-name: deploy-vnets
+          parameters: vnet1Name=vnet1 vnet2Name=vnet2 location=eastus
+
+      - name: Deploy VNET Peering
+        uses: azure/arm-deploy@v1
+        with:
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource-group: taha
+          template: bicep/vnet-peering.bicep
+          deployment-name: deploy-vnet-peering
+          parameters: vnet1Name=vnet1 vnet2Name=vnet2
+
+      - name: Deploy Virtual Machines
+        uses: azure/arm-deploy@v1
+        with:
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource-group: taha
+          template: bicep/vm.bicep
+          deployment-name: deploy-vms
+          parameters: vm1Name=myVM1 vm2Name=myVM2 adminUsername=azureuser adminPassword="${{ secrets.VM_PASSWORD }}"
+
+      - name: Deploy Storage Accounts
+        uses: azure/arm-deploy@v1
+        with:
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource-group: taha
+          template: bicep/storage.bicep
+          deployment-name: deploy-storage
+          parameters: storageAccount1=storage1 storageAccount2=storage2
+
+      - name: Enable Azure Monitor
+        uses: azure/arm-deploy@v1
+        with:
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource-group: taha
+          template: bicep/monitor.bicep
+          deployment-name: enable-monitoring
 
       - name: Verify Deployment
         run: |
