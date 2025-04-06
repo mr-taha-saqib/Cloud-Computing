@@ -10,6 +10,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write  # Allow write permissions to the ID token for Azure authentication
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -17,11 +20,8 @@ jobs:
       - name: Log in to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          
+          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Use the creds secret that contains your full credentials as a JSON string
+
       - name: Deploy VNETs
         uses: azure/arm-deploy@v1
         with:
