@@ -14,7 +14,7 @@ resource vnet1 'Microsoft.Network/virtualNetworks@2021-03-01' = {
         properties: {
           addressPrefix: '10.1.1.0/24'
         }
-      },
+      }
       {
         name: 'storage-subnet'
         properties: {
@@ -38,7 +38,7 @@ resource vnet2 'Microsoft.Network/virtualNetworks@2021-03-01' = {
         properties: {
           addressPrefix: '10.2.1.0/24'
         }
-      },
+      }
       {
         name: 'storage-subnet'
         properties: {
