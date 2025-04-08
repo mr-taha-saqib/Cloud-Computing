@@ -1,4 +1,3 @@
-/* vnet.bicep */
 param location string
 
 resource vnet1 'Microsoft.Network/virtualNetworks@2021-03-01' = {
