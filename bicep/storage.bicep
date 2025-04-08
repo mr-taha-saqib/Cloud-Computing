@@ -1,4 +1,3 @@
-/* storage.bicep */
 param location string
 
 resource storage1 'Microsoft.Storage/storageAccounts@2021-06-01' = {
@@ -24,3 +23,6 @@ resource storage2 'Microsoft.Storage/storageAccounts@2021-06-01' = {
     accessTier: 'Hot'
   }
 }
+
+output storage1Id string = storage1.id
+output storage2Id string = storage2.id
