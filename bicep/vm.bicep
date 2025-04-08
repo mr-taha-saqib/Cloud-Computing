@@ -1,5 +1,6 @@
-/* vm.bicep */
 param location string
+param adminUsername string
+param adminPassword string
 
 resource nic1 'Microsoft.Network/networkInterfaces@2021-05-01' = {
   name: 'nic-vm1'
@@ -28,8 +29,8 @@ resource vm1 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     }
     osProfile: {
       computerName: 'vm1'
-      adminUsername: 'azureuser'
-      adminPassword: 'P@ssword1234'
+      adminUsername: adminUsername
+      adminPassword: adminPassword
     }
     storageProfile: {
       imageReference: {
@@ -79,8 +80,8 @@ resource vm2 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     }
     osProfile: {
       computerName: 'vm2'
-      adminUsername: 'azureuser'
-      adminPassword: 'P@ssword1234'
+      adminUsername: adminUsername
+      adminPassword: adminPassword
     }
     storageProfile: {
       imageReference: {
